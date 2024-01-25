@@ -16,7 +16,7 @@ public class PresetUtxoSelector extends SingleSetUtxoSelector {
     public PresetUtxoSelector(Collection<BlockTransactionHashIndex> presetUtxos, Collection<BlockTransactionHashIndex> excludedUtxos) {
         this.presetUtxos = presetUtxos;
         this.excludedUtxos = excludedUtxos;
-        this.maintainOrder = false;
+        this.maintainOrder = true;
         this.requireAll = false;
     }
 

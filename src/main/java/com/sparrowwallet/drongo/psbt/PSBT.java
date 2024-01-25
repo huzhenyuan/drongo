@@ -78,7 +78,7 @@ public class PSBT {
         }
 
         //Shuffle outputs so change outputs are less obvious
-        transaction.shuffleOutputs();
+//        transaction.shuffleOutputs();
 
         if(includeGlobalXpubs) {
             for(Keystore keystore : walletTransaction.getWallet().getKeystores()) {
@@ -90,9 +90,14 @@ public class PSBT {
             this.version = version;
         }
 
-        int inputIndex = 0;
-        for(Iterator<Map.Entry<BlockTransactionHashIndex, WalletNode>> iter = walletTransaction.getSelectedUtxos().entrySet().iterator(); iter.hasNext(); inputIndex++) {
-            Map.Entry<BlockTransactionHashIndex, WalletNode> utxoEntry = iter.next();
+
+        Map<BlockTransactionHashIndex, WalletNode> selectedUtxos = walletTransaction.getSelectedUtxos();
+        List<Map.Entry<BlockTransactionHashIndex, WalletNode>> selectedUtxosList = selectedUtxos.entrySet().stream().sorted(Comparator.comparing(o -> o.getKey().getValue())).toList();
+        for (int inputIndex = 0; inputIndex < selectedUtxosList.size(); inputIndex++) {
+        //int inputIndex = 0;
+        //for(Iterator<Map.Entry<BlockTransactionHashIndex, WalletNode>> iter = walletTransaction.getSelectedUtxos().entrySet().iterator(); iter.hasNext(); inputIndex++) {
+            //Map.Entry<BlockTransactionHashIndex, WalletNode> utxoEntry = iter.next();
+            Map.Entry<BlockTransactionHashIndex, WalletNode> utxoEntry = selectedUtxosList.get(inputIndex);
 
             WalletNode walletNode = utxoEntry.getValue();
             Wallet signingWallet = walletNode.getWallet();
